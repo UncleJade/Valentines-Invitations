@@ -1,12 +1,11 @@
 // Variables for easy changing
 const questions = [
-    "Do you like flowers?",
-    "Do you believe small moments can be special?",
-    "Do small gestures sometimes mean more than grand ones?",
+    "Do you like surprises?",
+    "Do you enjoy spending time together?",
     "Are you free this Valentine’s Day?"
 ];
 const finalQuestion = "Can you be my Valentine date? 💖";
-const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "I’ll wait 😘", "Malulungkot ako nyan🥺"];
+const playfulMsgs = ["Are you sure? 🥺", "Think again 💕", "I’ll wait 😘"];
 let currentQuestionIndex = 0;
 let noClickCount = 0; // For final question logic
 let musicStarted = false;
@@ -30,17 +29,16 @@ if (!landing || !questionsScreen || !celebration || !questionText || !yesBtn || 
 
 // Function to start music (called on user interaction)
 function startMusic() {
+    console.log('Attempting to start music...');
     if (!musicStarted && bgMusic) {
-        bgMusic.muted = false;
-        bgMusic.volume = 0.6;
-        bgMusic.play()
-            .then(() => {
-                musicStarted = true;
-                musicControl.textContent = '⏸️';
-            })
-            .catch(() => {
-                console.log("User interaction required for audio");
-            });
+        bgMusic.play().then(() => {
+            musicStarted = true;
+            musicControl.textContent = '⏸️'; // Set to pause icon after starting
+            console.log('Music started successfully.');
+        }).catch((error) => {
+            console.error('Audio play failed:', error); // Log error if autoplay is blocked
+            alert('Music couldn\'t start. Check your browser settings or MP3 file.');
+        });
     }
 }
 
@@ -105,50 +103,48 @@ if (landing) {
     });
 }
 
-function sendAnswerToMessenger(answer) {
-    const link = `https://m.me/just.krazy.jade?ref=${encodeURIComponent(answer)}`;
-    window.open(link, '_blank'); // opens Messenger in new tab/app
-}
-
-// YES button
-yesBtn.addEventListener('click', () => {
-    const currentQ = currentQuestionIndex < questions.length
-        ? questions[currentQuestionIndex]
-        : finalQuestion;
-
-    sendAnswerToMessenger(`YES | Question: ${currentQ}`);
-    
-    if (currentQuestionIndex < questions.length) {
-        currentQuestionIndex++;
-        showNextQuestion();
-    } else {
-        questionsScreen.classList.remove('active');
-        celebration.classList.add('active');
-    }
-});
-
-// NO button
-noBtn.addEventListener('click', () => {
-    const currentQ = currentQuestionIndex < questions.length
-        ? questions[currentQuestionIndex]
-        : finalQuestion;
-
-    sendAnswerToMessenger(`NO | Question: ${currentQ}`);
-
-    if (currentQuestionIndex < questions.length) {
-        playfulMsg.textContent = "Aww, but let's keep going! 😊";
-        playfulMsg.classList.remove('hidden');
-        setTimeout(() => {
+// YES button logic
+if (yesBtn) {
+    yesBtn.addEventListener('click', () => {
+        console.log('YES button clicked. Current index:', currentQuestionIndex);
+        if (currentQuestionIndex < questions.length) {
+            // Regular question: Move to next
             currentQuestionIndex++;
             showNextQuestion();
-        }, 2000);
-    } else {
-        noClickCount++;
-        playfulMsg.textContent = playfulMsgs[Math.min(noClickCount - 1, playfulMsgs.length - 1)];
-        playfulMsg.classList.remove('hidden');
-        yesBtn.style.transform = `scale(${1 + noClickCount * 0.2})`;
-        noBtn.style.transform = `scale(${1 - noClickCount * 0.1})`;
-        noBtn.style.opacity = `${Math.max(0.1, 1 - noClickCount * 0.1)}`;
-        if (noClickCount > 5) noBtn.style.display = 'none';
-    }
-});
+        } else {
+            // Final question: Celebrate
+            console.log('Final YES clicked. Showing celebration.');
+            questionsScreen.classList.remove('active');
+            celebration.classList.add('active');
+        }
+    });
+}
+
+// NO button logic
+if (noBtn) {
+    noBtn.addEventListener('click', () => {
+        console.log('NO button clicked. Current index:', currentQuestionIndex);
+        if (currentQuestionIndex < questions.length) {
+            // Regular question: Show playful message and allow progression
+            playfulMsg.textContent = "Aww, but let's keep going! 😊";
+            playfulMsg.classList.remove('hidden');
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showNextQuestion();
+            }, 2000); // Delay before next question
+        } else {
+            // Final question: Special logic
+            noClickCount++;
+            playfulMsg.textContent = playfulMsgs[Math.min(noClickCount - 1, playfulMsgs.length - 1)];
+            playfulMsg.classList.remove('hidden');
+            // Grow YES button, shrink/move NO button
+            yesBtn.style.transform = `scale(${1 + noClickCount * 0.2})`;
+            noBtn.style.transform = `scale(${1 - noClickCount * 0.1})`;
+            noBtn.style.opacity = `${Math.max(0.1, 1 - noClickCount * 0.1)}`; // Prevent opacity from going negative
+            if (noClickCount > 5) {
+                noBtn.style.display = 'none'; // Hide NO after many clicks
+            }
+            console.log('NO clicked on final question. Count:', noClickCount);
+        }
+    });
+}
