@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Valentine's Invitation</title>
+    <!-- Google Fonts for romantic cursive style -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="valentines-style.css">
+</head>
+<body>
+    <!-- Background music (hidden audio element) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="itolamang.mp3" type="audio/mpeg"> <!-- Replace "your-music.mp3" with your actual MP3 file name/path -->
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- chamomile garden) -->
+    <div class="chamomile-field">
+    <div class="flowers back"></div>
+    <div class="flowers front"></div>
+    </div>
+
+    <!-- Music control icon (play/pause) -->
+    <div id="music-control" class="music-icon">🎵</div>
+
+    <!-- Landing screen -->
+    <div id="landing" class="screen active">
+        <div class="hearts-bg">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+        </div>
+        <h1>Happy Valentine's Day! 💕</h1>
+        <p>Click anywhere to start the magic...</p>
+    </div>
+
+    <!-- Questions screen -->
+    <div id="questions" class="screen">
+        <div id="question-container">
+            <p id="question-text"></p>
+            <div id="buttons">
+                <button id="yes-btn" class="btn yes-btn">YES</button>
+                <button id="no-btn" class="btn no-btn">NO</button>
+            </div>
+            <p> id="playful-msg" class="hidden"></p>
+        </div>
+    </div>
+
+    <!-- Celebration screen -->
+    <div id="celebration" class="screen">
+        <div class="confetti">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <h1>Yay! It’s a date! 💘</h1>
+        <p>Happy Valentine’s Day!</p>
+        <div class="animated-heart">❤️</div>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="valentines-main.js"></script>
+</body>
+</html>
