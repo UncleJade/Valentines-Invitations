@@ -1,4 +1,5 @@
 // Variables for easy changing
+const answersLog = [];
 const questions = [
     "Do you like flowers?",
     "Do small gestures sometimes mean more than grand ones?",
@@ -106,18 +107,19 @@ if (landing) {
 
 // YES button logic
 if (yesBtn) {
-    yesBtn.addEventListener('click', () => {
+yesBtn.addEventListener('click', () => {
     const question =
         currentQuestionIndex < questions.length
             ? questions[currentQuestionIndex]
             : finalQuestion;
 
-    sendAnswerEmail(question, "YES");
+    saveAnswer(question, "YES");
 
     if (currentQuestionIndex < questions.length) {
         currentQuestionIndex++;
         showNextQuestion();
     } else {
+        sendFinalEmail();
         questionsScreen.classList.remove('active');
         celebration.classList.add('active');
     }
@@ -132,7 +134,7 @@ if (noBtn) {
             ? questions[currentQuestionIndex]
             : finalQuestion;
 
-    sendAnswerEmail(question, "NO");
+    saveAnswer(question, "NO");
 
     if (currentQuestionIndex < questions.length) {
         playfulMsg.textContent = "Aww, but let's keep going! 😊";
@@ -142,10 +144,7 @@ if (noBtn) {
             showNextQuestion();
         }, 2000);
     } else {
-        noClickCount++;
-        playfulMsg.textContent =
-            playfulMsgs[Math.min(noClickCount - 1, playfulMsgs.length - 1)];
-        playfulMsg.classList.remove('hidden');
+        saveAnswer(question, "NO");
     }
 });
 }
@@ -164,19 +163,35 @@ if (envelope) {
     });
 }
 
-function sendAnswerEmail(question, answer) {
+function sendFinalEmail() {
+    const message = formatEmailMessage();
+
     emailjs.send(
         "service_piau6le",
         "template_vb4d7sk",
         {
-            question: question,
-            answer: answer,
+            question: "Valentine Invitation Answers",
+            answer: message,
             time: new Date().toLocaleString()
         }
     ).then(() => {
-        console.log("Email sent");
-    }).catch((error) => {
-        console.error("Email failed:", error);
+        console.log("Final email sent");
+    }).catch(err => {
+        console.error("Email failed:", err);
     });
 }
+
+function saveAnswer(question, answer) {
+    answersLog.push({
+        question,
+        answer
+    });
+}
+
+function formatEmailMessage() {
+    return answersLog.map((item, index) =>
+        `Q${index + 1}: ${item.question}\nAnswer: ${item.answer}`
+    ).join("\n\n");
+}
+
 
