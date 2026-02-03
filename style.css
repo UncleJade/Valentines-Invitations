@@ -421,13 +421,16 @@ body {
 
 .envelope {
     position: relative;
-    width: 500px;
-    height: 420px;
+    width: 90%;          /* Use percentage instead of fixed px */
+    max-width: 500px;    /* Prevent it from getting too wide on large screens */
+    height: auto;        /* Let height adjust based on content */
+    padding: 20px;       /* Add some padding so text doesn't touch edges */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     cursor: pointer;
     overflow: hidden;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 /* Letter */
