@@ -3,8 +3,8 @@
 ========================= */
 body {
     font-family: 'Dancing Script', cursive;
-    background: linear-gradient(135deg, #ffcccc, #ffb3ba);
-    color: #d63384;
+    background: linear-gradient(135deg, #f1a1c9, #f368a9);
+    color: #911955;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -12,7 +12,7 @@ body {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
     transition: all 0.5s ease;
 }
 
@@ -403,5 +403,85 @@ body {
     .flowers.back {
         opacity: 0.2;
         animation-duration: 12s;
+    }
+}
+
+/* =========================
+   ENVELOPE EFFECT
+========================= */
+.envelope-wrapper {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ffe6ea, #ffccd5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.envelope {
+    position: relative;
+    width: 260px;
+    height: 180px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Letter */
+.letter {
+    position: absolute;
+    inset: 15px;
+    background: #fffafc;
+    border-radius: 6px;
+    text-align: center;
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.8s ease;
+}
+
+.letter h2 {
+    margin: 0;
+    color: #ff4d6d;
+}
+
+.letter p {
+    font-size: 1rem;
+    color: #d63384;
+}
+
+/* Envelope flap */
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffb3c1;
+    clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+    transform-origin: top;
+    transition: transform 0.8s ease;
+    z-index: 5;
+}
+
+/* OPEN STATE */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .letter {
+    transform: translateY(0);
+}
+
+.envelope {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+    .envelope {
+        width: 220px;
+        height: 160px;
     }
 }

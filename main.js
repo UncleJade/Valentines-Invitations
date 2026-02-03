@@ -1,11 +1,12 @@
 // Variables for easy changing
 const questions = [
-    "Do you like surprises?",
-    "Do you enjoy spending time together?",
+    "Do you like flowers?",
+    "Do small gestures sometimes mean more than grand ones?",
+    "Do you enjoy want to spend time to a beach type of date?",
     "Are you free this Valentine’s Day?"
 ];
 const finalQuestion = "Can you be my Valentine date? 💖";
-const playfulMsgs = ["Are you sure? 🥺", "Think again 💕", "I’ll wait 😘"];
+const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "Di talaga pede?","I’ll wait for real","Di ito matatapos"," "];
 let currentQuestionIndex = 0;
 let noClickCount = 0; // For final question logic
 let musicStarted = false;
@@ -106,45 +107,76 @@ if (landing) {
 // YES button logic
 if (yesBtn) {
     yesBtn.addEventListener('click', () => {
-        console.log('YES button clicked. Current index:', currentQuestionIndex);
-        if (currentQuestionIndex < questions.length) {
-            // Regular question: Move to next
-            currentQuestionIndex++;
-            showNextQuestion();
-        } else {
-            // Final question: Celebrate
-            console.log('Final YES clicked. Showing celebration.');
-            questionsScreen.classList.remove('active');
-            celebration.classList.add('active');
-        }
-    });
+    const question =
+        currentQuestionIndex < questions.length
+            ? questions[currentQuestionIndex]
+            : finalQuestion;
+
+    sendAnswerEmail(question, "YES");
+
+    if (currentQuestionIndex < questions.length) {
+        currentQuestionIndex++;
+        showNextQuestion();
+    } else {
+        questionsScreen.classList.remove('active');
+        celebration.classList.add('active');
+    }
+});
 }
 
 // NO button logic
 if (noBtn) {
-    noBtn.addEventListener('click', () => {
-        console.log('NO button clicked. Current index:', currentQuestionIndex);
-        if (currentQuestionIndex < questions.length) {
-            // Regular question: Show playful message and allow progression
-            playfulMsg.textContent = "Aww, but let's keep going! 😊";
-            playfulMsg.classList.remove('hidden');
-            setTimeout(() => {
-                currentQuestionIndex++;
-                showNextQuestion();
-            }, 2000); // Delay before next question
-        } else {
-            // Final question: Special logic
-            noClickCount++;
-            playfulMsg.textContent = playfulMsgs[Math.min(noClickCount - 1, playfulMsgs.length - 1)];
-            playfulMsg.classList.remove('hidden');
-            // Grow YES button, shrink/move NO button
-            yesBtn.style.transform = `scale(${1 + noClickCount * 0.2})`;
-            noBtn.style.transform = `scale(${1 - noClickCount * 0.1})`;
-            noBtn.style.opacity = `${Math.max(0.1, 1 - noClickCount * 0.1)}`; // Prevent opacity from going negative
-            if (noClickCount > 5) {
-                noBtn.style.display = 'none'; // Hide NO after many clicks
-            }
-            console.log('NO clicked on final question. Count:', noClickCount);
-        }
+   noBtn.addEventListener('click', () => {
+    const question =
+        currentQuestionIndex < questions.length
+            ? questions[currentQuestionIndex]
+            : finalQuestion;
+
+    sendAnswerEmail(question, "NO");
+
+    if (currentQuestionIndex < questions.length) {
+        playfulMsg.textContent = "Aww, but let's keep going! 😊";
+        playfulMsg.classList.remove('hidden');
+        setTimeout(() => {
+            currentQuestionIndex++;
+            showNextQuestion();
+        }, 2000);
+    } else {
+        noClickCount++;
+        playfulMsg.textContent =
+            playfulMsgs[Math.min(noClickCount - 1, playfulMsgs.length - 1)];
+        playfulMsg.classList.remove('hidden');
+    }
+});
+}
+
+const envelope = document.querySelector('.envelope');
+const envelopeWrapper = document.querySelector('.envelope-wrapper');
+
+if (envelope) {
+    envelope.addEventListener('click', () => {
+        envelope.classList.add('open');
+
+        setTimeout(() => {
+            envelopeWrapper.style.display = 'none';
+            document.getElementById('landing').classList.add('active');
+        }, 3000);
     });
 }
+
+function sendAnswerEmail(question, answer) {
+    emailjs.send(
+        "service_piau6le",
+        "template_vb4d7sk",
+        {
+            question: question,
+            answer: answer,
+            time: new Date().toLocaleString()
+        }
+    ).then(() => {
+        console.log("Email sent");
+    }).catch((error) => {
+        console.error("Email failed:", error);
+    });
+}
+
