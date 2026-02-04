@@ -193,5 +193,3 @@ function formatEmailMessage() {
         `Q${index + 1}: ${item.question}\nAnswer: ${item.answer}`
     ).join("\n\n");
 }
-
-

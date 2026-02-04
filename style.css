@@ -488,3 +488,17 @@ body {
         height: 160px;
     }
 }
+
+/* FULL PAGE OVERLAY */
+.overlay-image {
+  position: fixed;
+  inset: 0; /* top:0 right:0 bottom:0 left:0 */
+
+  background-image: url("flower.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* key for responsiveness */
+
+  z-index: 1;
+  pointer-events: none; /* VERY IMPORTANT */
+}
