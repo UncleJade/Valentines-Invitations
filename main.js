@@ -2,12 +2,14 @@
 const answersLog = [];
 const questions = [
     "Do you like flowers?",
-    "Do small gestures sometimes mean more than grand ones?",
-    "Do you enjoy want to spend time to a beach type of date?",
+    "Do you like receiving handwritten notes?",
+    "Do you enjoy sweet treats like chocolate?",
+    "Do you believe effort is attractive?",
+    "Do you believe small moments matter?",
     "Are you free this Valentine’s Day?"
 ];
 const finalQuestion = "Can you be my Valentine date? 💖";
-const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "Di talaga pede?","I’ll wait for real","Di ito matatapos"," "];
+const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "Di talaga pede?","I’ll wait for real","Dito lang ako hehehe"," "];
 let currentQuestionIndex = 0;
 let noClickCount = 0; // For final question logic
 let musicStarted = false;
