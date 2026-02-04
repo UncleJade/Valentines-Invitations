@@ -4,12 +4,14 @@ const questions = [
     "Do you like flowers?",
     "Do you like receiving handwritten notes?",
     "Do you enjoy sweet treats like chocolate?",
+    "Do you enjoy simple, quiet moments?",
     "Do you believe effort is attractive?",
-    "Do you believe small moments matter?",
+    "Do you believe the little things count?",
     "Are you free this Valentine’s Day?"
 ];
+
 const finalQuestion = "Can you be my Valentine date? 💖";
-const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "Di talaga pede?","I’ll wait for real","Dito lang ako hehehe"," "];
+const playfulMsgs = ["Are you sure? 🥺", "Ayaw talaga?", "Di talaga pede?","I’ll wait for real","Dito lang ako hehehe"," Itatago ko na yung NO"];
 let currentQuestionIndex = 0;
 let noClickCount = 0; // For final question logic
 let musicStarted = false;
@@ -130,26 +132,48 @@ yesBtn.addEventListener('click', () => {
 
 // NO button logic
 if (noBtn) {
-   noBtn.addEventListener('click', () => {
-    const question =
-        currentQuestionIndex < questions.length
-            ? questions[currentQuestionIndex]
-            : finalQuestion;
+    noBtn.addEventListener('click', () => {
+        const question =
+            currentQuestionIndex < questions.length
+                ? questions[currentQuestionIndex]
+                : finalQuestion;
 
-    saveAnswer(question, "NO");
-
-    if (currentQuestionIndex < questions.length) {
-        playfulMsg.textContent = "Aww, but let's keep going! 😊";
-        playfulMsg.classList.remove('hidden');
-        setTimeout(() => {
-            currentQuestionIndex++;
-            showNextQuestion();
-        }, 2000);
-    } else {
         saveAnswer(question, "NO");
-    }
-});
+
+        // NORMAL QUESTIONS
+        if (currentQuestionIndex < questions.length) {
+            playfulMsg.textContent = "Aww, but let's keep going! 😊";
+            playfulMsg.classList.remove('hidden');
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showNextQuestion();
+            }, 2000);
+        }
+        // FINAL QUESTION LOGIC 👇
+        else {
+            noClickCount++;
+
+            // Grow YES button
+            const scale = 1 + noClickCount * 0.25;
+            yesBtn.style.transform = `scale(${scale})`;
+
+            // Optional: shrink NO button
+            noBtn.style.transform = `scale(${1 - noClickCount * 0.1})`;
+
+            // Playful messages
+            playfulMsg.textContent =
+                playfulMsgs[noClickCount % playfulMsgs.length];
+            playfulMsg.classList.remove('hidden');
+
+            // Optional: hide NO button after many clicks
+            if (noClickCount >= 6) {
+                noBtn.style.display = 'none';
+            }
+        }
+    });
 }
+
 
 const envelope = document.querySelector('.envelope');
 const envelopeWrapper = document.querySelector('.envelope-wrapper');

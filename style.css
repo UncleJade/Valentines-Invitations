@@ -513,3 +513,7 @@ body {
     background-position: center top;
   }
 }
+
+button {
+    transition: transform 0.3s ease;
+}
