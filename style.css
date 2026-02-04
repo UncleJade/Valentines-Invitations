@@ -14,6 +14,9 @@ body {
     justify-content: center;
     align-items: center;    
     transition: all 0.5s ease;
+
+    background-size: cover;
+    background-position: center;
 }
 
 /* =========================
@@ -492,13 +495,21 @@ body {
 /* FULL PAGE OVERLAY */
 .overlay-image {
   position: fixed;
-  inset: 0; /* top:0 right:0 bottom:0 left:0 */
+  inset: 0;
 
   background-image: url("flower.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover; /* key for responsiveness */
+  background-size: cover;
 
   z-index: 1;
-  pointer-events: none; /* VERY IMPORTANT */
+  pointer-events: none;
+}
+
+/* 📱 MOBILE DESIGN */
+@media (max-width: 768px) {
+  .overlay-image {
+    background-image: url("flower-2.png");
+    background-position: center top;
+  }
 }
